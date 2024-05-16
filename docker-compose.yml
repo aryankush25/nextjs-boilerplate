@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  server:
+    build: ./
+    ports:
+      - '1209:1209'
+    volumes:
+      - /app/node_modules
+      - ./:/app
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - POSTGRES_USER=server
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=server
+    volumes:
+      - postgres-data-server:/var/lib/postgresql/data
+
+volumes:
+  postgres-data-server:
